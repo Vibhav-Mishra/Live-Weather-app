@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * body{
+            background-image: url(https://www.thehindubusinessline.com/news/hgsctm/article30641130.ece/alternates/BASE_LANDSCAPE/weather1jpg);
+            background-size: 102.5%;
+            /* filter: blur(8px); */
+            /* -webkit-filter: blur(8px);     */
+            /* display: flex; */
+            /* width: 100%; */
+            /* height: 100%; */
+          
+        }  
+        .first{
+            display: flex;
+            justify-content: left;
+           text-align: center;
+
+        }
+         /* #container{
+             display: flex;
+             justify-content: space-between;
+             margin-bottom: 40px;
+             border: 2px solid lightskyblue;
+             border-radius: 30px;
+             border-style: dashed;
+             color: azure;
+             text-align: left;
+             width: 200px;
+             font-weight: 900;
+             font-size: larger;
+             color: chartreuse;
+             /* display: flex; */
+             /* align-items: flex-end; */
+            /* justify-content: right; */
+            /* filter: blur(8px); */
+            /* -webkit-filter: blur(8px); */
+           /* margin: 25px; */
+        /* } */ 
+        iframe{
+            display: flex;
+            align-items: flex-end;
+            justify-content: left;
+            margin-left: 1000px;
+        }
+        button{
+            margin: 10px;
+            color: tomato;
+            background: transparent;
+            font-size: 28px;
+            border: 2px solid rgb(253, 215, 0);
+            height: 45px;
+            width: 250px;
+            border-radius: 35px 1px 30px 1px;
+        }  
+        input{
+            margin: 10px;
+            color: tomato;
+            border: 2px solid rgb(255, 236, 68);
+            background: transparent;
+            text-align: center;
+            font-size: 30px;
+            width: 300px;
+            display: grid;
+            border-radius: 35px 1px 30px 1px;
+            height: 40px;   
+        }
+        h3{
+            font-weight: 150px;
+        }
+        .second{
+            justify-content: space-between;
+            width: 100%;
+            height: auto;
+            margin-top: 80px;
+            justify-content: left;
+            color: azure;
+            display: flex; 
+            border: 1px solid white;
+         }
+        .second >detail{
+            display: flex;
+            color: rgb(255, 77, 77);
+        }
+
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="first"> 
+    <input type="text" id="city" placeholder="ENTER CITY" />
+    <button onclick="getWeather()">Get Weather</button>
+     </div>
+    <!-- <div id="container"></div> -->
+    <div class="second">
+        <div id="detail"></div>
+        <div id="container"></div>
+    </div>
+
+<!-- </div> -->
+</body>
+
+</html>
+
+<script>
+
+    // api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+    // 1d4698331918ca479fff523600504e43
+
+
+    let container = document.getElementById("container");
+    let detail = document.getElementById("detail");
+
+
+    async function getWeather() {
+        try {
+            let city = document.getElementById("city").value;
+
+            let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=1d4698331918ca479fff523600504e43`);
+
+            let data = await res.json();
+
+            appendData(data);
+
+            console.log("data:", data);
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+    }
+
+    function appendData(data) {
+        container.innerHTML = null;
+
+        let name = document.createElement("h3");
+
+        name.innerText = data.name;
+
+        let temp = document.createElement("h3");
+
+        temp.innerText = data.main.temp;
+
+        let pressure = document.createElement("h3");
+
+        pressure.innerText = data.main.pressure;
+
+        let humidity = document.createElement("h3")
+
+        humidity.innerText = data.main.humidity;
+
+
+        let iframe = document.createElement("iframe")
+
+        iframe.src = `https://maps.google.com/maps?q=${data.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+
+        // iframe.height = `590px`;
+
+        // iframe.width = `590px`;
+
+        detail.append(name, temp, pressure, humidity);
+        container.append(iframe);
+    }
+
+
+</script>
